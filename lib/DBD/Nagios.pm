@@ -57,14 +57,15 @@ $DBD::Nagios::dr::imp_data_size = 0;
 # connect()
 # ------
 sub connect {
-      my ($drh, $dsn, $user, $auth, $attr) = @_;
+    my ($drh, $dsn, $user, $auth, $attr) = @_;
 
-      my $dbh = DBI::_new_dbh($drh, {
-                                     Name         => $dsn,
-                                     USER         => $user,
-                                     CURRENT_USER => $user,
-                                    });
-      return $dbh;
+    my $dbh = DBI::_new_dbh($drh, {
+        Name         => $dsn,
+        USER         => $user,
+        CURRENT_USER => $user,
+    });
+
+    return $dbh
 }
 
 
