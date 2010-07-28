@@ -28,7 +28,8 @@ sub driver {
 
     return $drh if $drh;    # database driver already created
 
-    my $dbclass = $class . "::db";
+    my $dbclass = $class . "::dr";
+
     $drh = DBI::_new_drh($dbclass, {
         Name        => $class,
         Version     => $VERSION,
