@@ -42,6 +42,10 @@ sub driver {
     return $drh
 }
 
+sub CLONE {
+    undef $drh;
+}
+
 
 # ------------------------------------------------------------------------------
 # driver interface
@@ -50,7 +54,26 @@ package DBD::Nagios::dr;
 use strict;
 use warnings;
 
+$DBD::Nagios::dr::imp_data_size = 0;
 
+sub connect {
+      my ($drh, $dsn, $user, $auth, $attr) = @_;
+
+      return $drh->set_err(1, "Not implemented yet !");
+      # my $dbh = DBI::_new_dbh($drh, {
+      #                                Name         => $dsn,
+      #                                USER         => $user,
+      #                                CURRENT_USER => $user,
+      #                               });
+      # return $dbh;
+}
+
+sub data_sources {
+    my ($drh, $attr) = @_;
+    my $sDbdName = 'Nagios';
+
+    return ("dbi:$sDbdName:");
+}
 
 # ------------------------------------------------------------------------------
 # database interface
@@ -59,6 +82,7 @@ package DBD::Nagios::db;
 use strict;
 use warnings;
 
+$DBD::Nagios::db::imp_data_size = 0;
 
 
 # ------------------------------------------------------------------------------
@@ -68,7 +92,7 @@ package DBD::Nagios::st;
 use strict;
 use warnings;
 
-
+$DBD::Nagios::st::imp_data_size = 0;
 
 
 "OK"
@@ -89,7 +113,9 @@ Version 0.01
 
     use DBI;
 
-    my $nagios = DBI->connect("dbi:Nagios:xxx", "", "");
+    my $dbh = DBI->connect("dbi:Nagios:") or
+        die "Cannot connect: $DBI::errstr";
+
     ...
 
 
