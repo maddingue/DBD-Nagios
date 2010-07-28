@@ -74,9 +74,15 @@ sub connect {
 # ------------
 sub data_sources {
     my ($drh, $attr) = @_;
-    my $sDbdName = 'Nagios';
+    my $dbd_name = "Nagios";
 
-    return ("dbi:$sDbdName:");
+    my @paths = qw< /var/lib/nagios/rw/live >;
+
+    for my $path (@paths) {
+        return "dbi:$dbd_name:socket=$path" if -S $path
+    }
+
+    return
 }
 
 
