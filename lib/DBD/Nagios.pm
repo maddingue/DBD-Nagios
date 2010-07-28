@@ -3,14 +3,14 @@ use strict;
 use warnings;
 
 # globals
+use vars qw<
+    $VERSION  $err  $errstr  $sqlstate  $drh  $DBD_IGNORECASE
+>;
 
-use vars qw($VERSION $err $errstr $sqlstate $drh);
-
-$VERSION  = '0.01';    #
+$VERSION  = '0.01';
 
 $drh      = undef;     # holds driver handle once initialised
 
-use vars qw($DBD_IGNORECASE);
 $DBD_IGNORECASE = 1;
 
 
