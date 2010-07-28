@@ -13,9 +13,6 @@ use vars qw($VERSION $err $errstr $sqlstate $drh);
 
 $VERSION  = '0.01';    #
 
-$err      = 0;         # holds error code   for DBI::err
-$errstr   =  '';       # holds error string for DBI::errstr
-$sqlstate = '00000';   # holds sqlstate for DBI::sqlstate
 $drh      = undef;     # holds driver handle once initialised
 
 use vars qw($DBD_IGNORECASE);
@@ -33,11 +30,8 @@ sub driver {
     $drh = DBI::_new_drh($dbclass, {
         Name        => $class,
         Version     => $VERSION,
-        Err         => \$DBD::Nagios::err,
-        Errstr      => \$DBD::Nagios::errstr,
-        State       => \$DBD::Nagios::sqlstate,
         Attribution => "DBD::Nagios by Sebastien Aperghis-Tramoni and Yves Blusseau",
-    }) or return;
+    }) or return undef;
 
     return $drh
 }
