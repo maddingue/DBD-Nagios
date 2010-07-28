@@ -3,7 +3,7 @@ use strict;
 use Test::More;
 
 
-plan tests => xx;
+plan tests => 5;
 diag "check that the driver provides all the methods expected by DBI";
 
 my $driver = "DBD::Nagios";
