@@ -14,6 +14,7 @@ WriteMakefile(
         'INC'          => '',
         'dist'         => { 'SUFFIX'   => '.gz',
                             'COMPRESS' => 'gzip -9f' },
+        "clean"        => { FILES => 'DBD-Nagios-*' },
         'realclean'    => { FILES => '*.xsi' },
         PREREQ_PM => {
             # prereqs
