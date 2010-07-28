@@ -13,7 +13,10 @@ $drh      = undef;     # holds driver handle once initialised
 use vars qw($DBD_IGNORECASE);
 $DBD_IGNORECASE = 1;
 
-# ------------------------------------------------------------------------------
+
+#
+# driver()
+# ------
 sub driver {
     my ($class, $attr) = @_;
 
@@ -30,6 +33,10 @@ sub driver {
     return $drh
 }
 
+
+#
+# CLONE()
+# -----
 sub CLONE {
     undef $drh;
 }
@@ -42,8 +49,13 @@ package DBD::Nagios::dr;
 use strict;
 use warnings;
 
+
 $DBD::Nagios::dr::imp_data_size = 0;
 
+
+#
+# connect()
+# ------
 sub connect {
       my ($drh, $dsn, $user, $auth, $attr) = @_;
 
@@ -55,12 +67,17 @@ sub connect {
       return $dbh;
 }
 
+
+#
+# data_sources()
+# ------------
 sub data_sources {
     my ($drh, $attr) = @_;
     my $sDbdName = 'Nagios';
 
     return ("dbi:$sDbdName:");
 }
+
 
 # ------------------------------------------------------------------------------
 # database interface
@@ -69,8 +86,13 @@ package DBD::Nagios::db;
 use strict;
 use warnings;
 
+
 $DBD::Nagios::db::imp_data_size = 0;
 
+
+#
+# STORE()
+# -----
 sub STORE {
     my ($dbh, $attr, $val) = @_;
 
@@ -92,6 +114,10 @@ sub STORE {
     return $dbh->SUPER::STORE($attr, $val);
 }
 
+
+#
+# FETCH()
+# -----
 sub FETCH {
     my ($dbh, $attr) = @_;
 
