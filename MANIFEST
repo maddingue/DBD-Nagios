@@ -1,9 +1,10 @@
-MANIFEST
 Build.PL
-Makefile.PL
 Changes
-README
+lib/Bundle/DBD/Nagios.pm
 lib/DBD/Nagios.pm
+Makefile.PL
+MANIFEST
+README
 t/00-load.t
 t/pod-coverage.t
 t/pod.t
