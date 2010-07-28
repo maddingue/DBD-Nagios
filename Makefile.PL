@@ -2,20 +2,46 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-WriteMakefile(
-    NAME                => 'DBD::Nagios',
-    AUTHOR              => 'Sebastien Aperghis-Tramoni <sebastien@aperghis.net>',
-    VERSION_FROM        => 'lib/DBD/Nagios.pm',
-    ABSTRACT_FROM       => 'lib/DBD/Nagios.pm',
-    PL_FILES            => {},
-    PREREQ_PM => {
-        # prereqs
-        'DBI'           => '1.40',
+use lib 'lib'; # for use DBI::DBD
+use DBI::DBD;
 
-        # build/test prereqs
-        'Test::More'    => 0,
+my %opts;
+
+WriteMakefile(
+    dbd_edit_mm_attribs( {
+        'NAME'         => 'DBD::Nagios',
+        'VERSION_FROM' => 'lib/DBD/Nagios.pm',
+        'INC'          => '',
+        'dist'         => { 'SUFFIX'   => '.gz',
+                            'COMPRESS' => 'gzip -9f' },
+        'realclean'    => { FILES => '*.xsi' },
+        PREREQ_PM => {
+            # prereqs
+            'DBI'           => '1.40',
+
+            # build/test prereqs
+            'Test::More'    => 0,
+        },
+        'CONFIGURE'    => sub {
+            eval {require DBI::DBD;};
+            if ($@) {
+                warn $@;
+                exit 0;
+            }
+            my $dbi_arch_dir = dbd_dbi_arch_dir();
+            if (exists($opts{INC})) {
+                return {INC => "$opts{INC} -I$dbi_arch_dir"};
+            } else {
+                return {INC => "-I$dbi_arch_dir"};
+            }
+        }
     },
-    dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'DBD-Nagios-*' },
+    { create_pp_tests => 1})
 );
 
+package MY;
+sub postamble { return main::dbd_postamble(@_); }
+sub libscan {
+    my ($self, $path) = @_;
+    ($path =~ m/\~$/) ? undef : $path;
+}

@@ -1,20 +1,40 @@
+use strict;
+use warnings;
+
 package DBD::Nagios;
 use strict;
 use warnings;
 
+require DBI;
+
 # globals
-our $VERSION    = '0.01';
-our $drh        = undef;
 
+use vars qw($VERSION $err $errstr $sqlstate $drh);
 
+$VERSION  = '0.01';    #
+
+$err      = 0;         # holds error code   for DBI::err
+$errstr   =  '';       # holds error string for DBI::errstr
+$sqlstate = '00000';   # holds sqlstate for DBI::sqlstate
+$drh      = undef;     # holds driver handle once initialised
+
+use vars qw($DBD_IGNORECASE);
+$DBD_IGNORECASE = 1;
+
+# ------------------------------------------------------------------------------
 sub driver {
+
     my ($class, $attr) = @_;
 
     return $drh if $drh;    # database driver already created
 
-    $drh = DBI::_new_drh($class, {
-        Name        => "Nagios",
+    my $dbclass = $class . "::db";
+    $drh = DBI::_new_drh($dbclass, {
+        Name        => $class,
         Version     => $VERSION,
+        Err         => \$DBD::Nagios::err,
+        Errstr      => \$DBD::Nagios::errstr,
+        State       => \$DBD::Nagios::sqlstate,
         Attribution => "DBD::Nagios by Sebastien Aperghis-Tramoni and Yves Blusseau",
     }) or return;
 
