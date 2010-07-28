@@ -1,0 +1,6 @@
+*.bak
+*.old
+Makefile
+blib/
+pm_to_blib
+t/zvpp_00-load.t
