@@ -34,7 +34,7 @@ You could start by running:
 
   perl -MCPAN -e 'install Bundle::CPAN'
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 This module is currently maintained by SE<eacute>bastien Aperghis-Tramoni
 <sebastien@aperghis.net> and Yves Blusseau <1p0aj9c02@sneakemail.com>
