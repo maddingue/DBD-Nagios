@@ -1,11 +1,6 @@
-use strict;
-use warnings;
-
 package DBD::Nagios;
 use strict;
 use warnings;
-
-require DBI;
 
 # globals
 
@@ -20,7 +15,6 @@ $DBD_IGNORECASE = 1;
 
 # ------------------------------------------------------------------------------
 sub driver {
-
     my ($class, $attr) = @_;
 
     return $drh if $drh;    # database driver already created
@@ -53,13 +47,12 @@ $DBD::Nagios::dr::imp_data_size = 0;
 sub connect {
       my ($drh, $dsn, $user, $auth, $attr) = @_;
 
-      return $drh->set_err(1, "Not implemented yet !");
-      # my $dbh = DBI::_new_dbh($drh, {
-      #                                Name         => $dsn,
-      #                                USER         => $user,
-      #                                CURRENT_USER => $user,
-      #                               });
-      # return $dbh;
+      my $dbh = DBI::_new_dbh($drh, {
+                                     Name         => $dsn,
+                                     USER         => $user,
+                                     CURRENT_USER => $user,
+                                    });
+      return $dbh;
 }
 
 sub data_sources {
@@ -78,6 +71,40 @@ use warnings;
 
 $DBD::Nagios::db::imp_data_size = 0;
 
+sub STORE {
+    my ($dbh, $attr, $val) = @_;
+
+    if ($attr eq 'AutoCommit') {
+        if (!$val) {
+            return $dbh->set_err( 1, "Can't disable AutoCommit" );
+        }
+        return 1;
+    }
+    elsif ($attr =~ m/^nag_/) {
+        # Handle only our private attributes here
+        # Note that we could trigger arbitrary actions.
+        # Ideally we should warn about unknown attributes.
+        $dbh->{$attr} = $val; # Yes, we are allowed to do this,
+        return 1;             # but only for our private attributes
+
+    }
+    # Else pass up to DBI to handle for us
+    return $dbh->SUPER::STORE($attr, $val);
+}
+
+sub FETCH {
+    my ($dbh, $attr) = @_;
+
+    if ($attr eq 'AutoCommit') { return 1; }
+    elsif ($attr =~ m/^nag_/) {
+          # Handle only our private attributes here
+          # Note that we could trigger arbitrary actions.
+          return $dbh->{$attr}; # Yes, we are allowed to do this,
+                                # but only for our private attributes
+    }
+    # Else pass up to DBI to handle
+    $dbh->SUPER::FETCH($attr);
+}
 
 # ------------------------------------------------------------------------------
 # statement interface
