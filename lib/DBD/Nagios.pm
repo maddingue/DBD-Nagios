@@ -187,6 +187,9 @@ Nagios - L<http://www.nagios.org/>
 
 MK Livestatus - L<http://mathias-kettner.de/checkmk_livestatus.html>
 
+L<Monitoring::Livestatus>, L<Monitoring::Livestatus::Class> for modules
+providing access to Nagios Livestatus outside the DBI API.
+
 
 =head1 AUTHORS
 
