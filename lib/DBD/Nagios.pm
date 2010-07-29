@@ -178,6 +178,47 @@ Version 0.01
 xxx
 
 
+=head1 METHODS
+
+=head2 DBI Class Methods
+
+=head3 connect
+
+Creates and returns a DBI handle connected to specified Nagios Livestatus
+service.
+
+    DBI->connect("dbi:Nagios:socket=$path;...", $user, $password, \%options)
+
+
+B<DSN Parameters:>
+
+=over
+
+=item *
+
+C<socket> - path to the local UNIX socket of Nagios Livestatus
+
+=item *
+
+C<host> - remote Nagios Livestatus server name
+
+=item *
+
+C<port> - remote Nagios Livestatus server port
+
+=back
+
+
+B<Options:>
+
+=over
+
+=item *
+
+C<KeepAlive> - keep open the connection and reuse it for several requests
+
+=back
+
 
 =head1 SEE ALSO
 
